@@ -44,23 +44,21 @@ run_cmd() {
 # ---------------------------------------------------------------------------
 SHARED_ARGS=(
     --policy flowmatching
+    --wandb_entity leiboshu
     --network_architecture mlp
-    --mlp_dims "[1024, 1024, 1024]"
+    --mlp_dims "[768, 768, 768]"
     --vision_backbone vit
     --flow_network_output_param u
     --cfm_loss_mode u
     --cfm_loss_use_huber False
-    --cfm_loss_huber_delta 0.5
+    --cfm_loss_huber_delta 1.0
     --grad_clip_norm 25
-    --wandb_entity leiboshu
-    --horizon 16
-    --n_action_steps 8
     --sampling_steps 10
     --batch_size 512
     --learning_rate 1e-4
     --lr_backbone 1e-5
     --weight_decay 1e-6
-    --ema_power 0.995
+    --ema_power 0.999
     --enable_geometric_augmentations True
     --seed 3
     --num_workers 16
@@ -69,41 +67,46 @@ SHARED_ARGS=(
     --eval_num_envs 25
     --eval_num_episodes 50
     --log_freq 5
-    --save_freq 1000
-    --rollout_freq 1000
+    --save_freq 10000
+    --rollout_freq 10000
 )
 
 ###########################################################################
-# Tray Lifting (TwoArmLiftTray) — base policy run: ri0w9j39
+# Square
 ###########################################################################
 # echo "====================================================================="
-# echo "  Pretraining: Tray Lifting"
+# echo "  Pretraining: Square"
 # echo "====================================================================="
 
 # run_cmd python pretrain_flow_bc.py \
 #     "${SHARED_ARGS[@]}" \
-#     --dataset ankile/dexmg-two-arm-lift-tray \
-#     --image_observation_keys "agentview_image robot0_eye_in_hand_image robot1_eye_in_hand_image" \
-#     --eval_env TwoArmLiftTray \
+#     --dataset ankile/robomimic-mh-square-image \
+#     --image_observation_keys "agentview_image" \
+#     --eval_env Square \
 #     --steps 1000000 \
-#     --experiment flow_bc_tray_baseline
+#     --horizon 4 \
+#     --n_action_steps 4 \
+#     --max_num_episodes 100 \
+#     --experiment flow_bc_square
 
 ###########################################################################
-# Square — base policy run: trc7rbt0
+# Transport (two-arm)
 ###########################################################################
 echo "====================================================================="
-echo "  Pretraining: Square"
+echo "  Pretraining: Transport"
 echo "====================================================================="
 
 run_cmd python pretrain_flow_bc.py \
     "${SHARED_ARGS[@]}" \
-    --dataset ankile/robomimic-mh-square-image \
-    --image_observation_keys "agentview_image" \
-    --eval_env Square \
+    --dataset ankile/robomimic-mh-transport-image \
+    --image_observation_keys "shouldercamera0_image shouldercamera1_image" \
+    --eval_env Transport \
     --steps 1000000 \
+    --horizon 8 \
+    --n_action_steps 8 \
     --max_num_episodes 100 \
-    --experiment flow_bc_square_baseline
+    --experiment flow_bc_transport_h8a8-v1.4.1
 
 echo "====================================================================="
-echo "  All 5 base policy pretraining runs complete"
+echo "  All base policy pretraining runs complete"
 echo "====================================================================="

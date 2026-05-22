@@ -6,7 +6,7 @@ import os
 from robosuite import macros
 
 macros.IMAGE_CONVENTION = "opencv"
-import dexmimicgen  # noqa: F401
+# import dexmimicgen  # noqa: F401
 import gymnasium as gym
 import numpy as np
 import robosuite
@@ -37,7 +37,7 @@ ENV_ROBOTS = {
     # Can task – implemented in robosuite as `PickPlaceCan`
     "PickPlaceCan": ["Panda"],
     # Square task – implemented in robosuite as `NutAssemblySquare`
-    "NutAssemblySquare": ["Panda"],
+    "NutAssemblySquare": ["Panda"]
 }
 # Create a named logger
 logger = logging.getLogger(__name__)
@@ -115,6 +115,7 @@ class RobosuiteGymWrapper:
             "NutAssemblySquare": 400,
             "TwoArmLiftTray": 1000,
             "TwoArmThreading": 400,
+            "TwoArmTransport": 800,
         }.get(env_name, 800)
 
         # Add Gymnasium-required attributes

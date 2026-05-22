@@ -12,26 +12,27 @@ SENTINEL_FILE=.env_setup_finish
 mkdir -p $WORKSPACE_DIR
 
 if [[ ! -f $SENTINEL_FILE ]]; then
-  # Install miniconda
-  if [[ ! -d $CONDA_ROOT ]]; then
-    mkdir -p $CONDA_ROOT
-    curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o $CONDA_ROOT/miniconda.sh
-    bash $CONDA_ROOT/miniconda.sh -b -u -p $CONDA_ROOT
-    rm $CONDA_ROOT/miniconda.sh
-  fi
+  # # Install miniconda
+  # if [[ ! -d $CONDA_ROOT ]]; then
+  #   mkdir -p $CONDA_ROOT
+  #   curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o $CONDA_ROOT/miniconda.sh
+  #   bash $CONDA_ROOT/miniconda.sh -b -u -p $CONDA_ROOT
+  #   rm $CONDA_ROOT/miniconda.sh
+  # fi
 
-  # Create the conda environment
-  if [[ ! -d $ENV_ROOT ]]; then
+  # # Create the conda environment
+  # if [[ ! -d $ENV_ROOT ]]; then
 
-    $CONDA_ROOT/bin/conda tos accept
-    $CONDA_ROOT/bin/conda install -y mamba -c conda-forge -n base
-    MAMBA_ROOT_PREFIX=$CONDA_ROOT $CONDA_ROOT/bin/mamba create -y -n fpo_manipulation python=3.10
+  #   $CONDA_ROOT/bin/conda tos accept
+  #   $CONDA_ROOT/bin/conda install -y mamba -c conda-forge -n base
+  #   MAMBA_ROOT_PREFIX=$CONDA_ROOT $CONDA_ROOT/bin/mamba create -y -n fpo_manipulation python=3.10
 
-  fi
+  # fi
 
-  # Initialize conda and activate environment
-  eval "$($CONDA_ROOT/bin/conda shell.bash hook)"
-  conda activate fpo_manipulation
+  # # Initialize conda and activate environment
+  # eval "$($CONDA_ROOT/bin/conda shell.bash hook)"
+  # conda activate fpo_manipulation
+  source /mnt/kostas-graid/sw/envs/boshu/miniconda3/bin/activate fpo_manipulation 
 
   # Ensure gymnasium 1.1.1 is installed
   python -m pip install gymnasium==1.1.1

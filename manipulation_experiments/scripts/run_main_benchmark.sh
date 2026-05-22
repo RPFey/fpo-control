@@ -43,6 +43,7 @@ SHARED_ARGS=(
   --distributed True
   --base-policy-wandb-project flow-bc
   --load-ema True
+  --wandb_entity leiboshu
   --wandb_project flow-bc-fpo-finetuning
   --wandb_enable True
   --gradient_accumulation_steps 1
@@ -70,11 +71,7 @@ SHARED_ARGS=(
 # ---------------------------------------------------------------------------
 #              task_name       env_name             run_id    ckpt_step      total_ts  discount
 TASKS=(
-  "can        Can              95j3noe4  step_1000    5000000   0.99"
   "square     Square           trc7rbt0  step_110000  8000000   0.995"
-  "box        TwoArmBoxCleanup lainyisy  step_10000   5000000   0.995"
-  "tray       TwoArmLiftTray   ri0w9j39  step_20000   8000000   0.999"
-  "threading  TwoArmThreading  6vqrn614  step_10000   8000000   0.999"
 )
 
 ###########################################################################
@@ -104,9 +101,8 @@ for task_line in "${TASKS[@]}"; do
       for SEED in 0 1 2; do
         run_cmd torchrun --nproc_per_node="$NUM_GPUS" finetune_online_rl.py \
           "${SHARED_ARGS[@]}" \
-          --base_policy_wandb_run_id "$run_id" \
-          --checkpoint_step "$ckpt_step" \
-          --experiment "finetune-fpo++-${task_key}" \
+          --base_policy_local_path /home/leiboshu/ActiveLearning/fpo-control/manipulation_experiments/runs/flow_bc_square_baseline_2026-05-16_19-12-31/checkpoints/best/policy \
+          --experiment "finetune-fpo++-${task_key}-baseline" \
           --total_timesteps "$total_ts" \
           --task "$env_name" \
           --eval_env "$env_name" \

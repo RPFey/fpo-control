@@ -1008,6 +1008,7 @@ def main(cfg: TrainFlowBCConfig):
             "Lift",
             "Can",
             "Square",
+            "Transport"
         ]
         # alias_map = {
         #     # Robomimic papers / datasets refer to these tasks without the
